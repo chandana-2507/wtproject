@@ -64,6 +64,18 @@ app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'ok' });
 });
 
+// TEMPORARY - remove after seeding
+app.get('/api/seed-now', async (req, res) => {
+  try {
+    const path = require('path');
+    const { execSync } = require('child_process');
+    const output = execSync('node ' + path.join(__dirname, 'seed/seedData.js'), { encoding: 'utf8' });
+    res.json({ success: true, output });
+  } catch (e) {
+    res.json({ success: false, error: e.message });
+  }
+});
+
 app.use(notFound);
 app.use(errorHandler);
 
